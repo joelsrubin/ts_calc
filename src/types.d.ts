@@ -1,9 +1,17 @@
 type ClickHandler = () => void;
-type EventHandler = (e: React.MouseEvent<HTMLButtonElement>) => void;
+type EventHandler = (e: React.MouseEvent<HTMLInputELement>) => void;
+type TextHandler = () => string;
 
-type MathState = 'multiply' | 'add' | 'subtract' | 'divide' | '';
+type MathState =
+  | 'multiply'
+  | 'add'
+  | 'subtract'
+  | 'divide'
+  | 'power'
+  | 'root'
+  | '';
 
-type ValState = 'val1' | 'val2' | 'clear';
+type ActionTypes = 'math' | 'compute' | 'clear' | 'val1' | 'val2';
 
 type InitialState = {
   currentTotal: number;
@@ -13,7 +21,6 @@ type InitialState = {
 };
 
 type Action = {
-  type: 'math' | 'compute' | 'clear' | 'val1' | 'val2';
-  mathState: MathState;
-  value: number;
+  type: ActionTypes;
+  value?: number | MathState;
 };

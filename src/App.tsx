@@ -1,80 +1,17 @@
 import { useEffect, useReducer, useState } from 'react';
-
 import './App.css';
-
-const initialState = {
-  mathState: '',
-  currentTotal: 0,
-  val1: 0,
-  val2: 0,
-};
-
-function mathReducer(state: InitialState, action: any) {
-  switch (action.type) {
-    case 'val1':
-      return {
-        ...state,
-        val1: action.value,
-      };
-    case 'val2':
-      return {
-        ...state,
-        val2: action.value,
-      };
-    case 'math':
-      return {
-        ...state,
-        mathState: action.mathState,
-      };
-    case 'compute':
-      switch (state.mathState) {
-        case 'add':
-          return {
-            ...state,
-            mathState: '',
-            currentTotal: state.val1 + state.val2,
-            val1: state.val1 + state.val2,
-          };
-        case 'subtract':
-          return {
-            ...state,
-            mathState: '',
-            currentTotal: state.val1 - state.val2,
-            val1: state.val1 - state.val2,
-          };
-        case 'multiply':
-          return {
-            ...state,
-            mathState: '',
-            currentTotal: state.val1 * state.val2,
-            val1: state.val1 * state.val2,
-          };
-        case 'divide':
-          return {
-            ...state,
-            mathState: '',
-            currentTotal: state.val1 / state.val2,
-            val1: state.val1 / state.val2,
-          };
-        default:
-          return state;
-      }
-    case 'clear':
-      return {
-        ...initialState,
-      };
-    default:
-      return state;
-  }
-}
+import { initialState, mathReducer } from './Reducer';
 
 function App() {
   const [state, dispatch] = useReducer(mathReducer, initialState);
   const [curNum, setCurNum] = useState('0');
   const [equals, setEquals] = useState(false);
+  const { mathState, val1, val2 } = state;
 
-  const handleClick = (e: any) => {
-    const value = e.target.innerHTML;
+  const handleClick: EventHandler = (e) => {
+    const element = e.target as HTMLInputElement;
+    const value = element.innerHTML;
+
     if (curNum === '0') {
       setCurNum(value);
       state.mathState
@@ -89,19 +26,19 @@ function App() {
     }
   };
 
-  const handleMath = (e: any) => {
-    const { value } = e.target;
-    dispatch({ type: 'math', mathState: value });
+  const handleMath: any = (e: any) => {
+    const { value } = e.target as HTMLInputElement;
+    dispatch({ type: 'math', value });
     setCurNum('');
   };
 
-  const handleClear = () => {
+  const handleClear: ClickHandler = () => {
     setCurNum('');
     setEquals(false);
     dispatch({ type: 'clear' });
   };
 
-  const handleEquals = () => {
+  const handleEquals: ClickHandler = () => {
     setEquals(true);
     dispatch({ type: 'compute' });
   };
@@ -110,24 +47,27 @@ function App() {
     document.addEventListener('keydown', (e) => {
       switch (e.key) {
         case '+':
-          dispatch({ type: 'math', mathState: 'add' });
+          dispatch({ type: 'math', value: 'add' });
           setCurNum('');
           break;
         case '*':
-          dispatch({ type: 'math', mathState: 'multiply' });
+          dispatch({ type: 'math', value: 'multiply' });
           setCurNum('');
           break;
         case '-':
-          dispatch({ type: 'math', mathState: 'subtract' });
+          dispatch({ type: 'math', value: 'subtract' });
           setCurNum('');
           break;
         case 'x':
-          dispatch({ type: 'math', mathState: 'multiply' });
+          dispatch({ type: 'math', value: 'multiply' });
           setCurNum('');
           break;
         case '/':
-          dispatch({ type: 'math', mathState: 'divide' });
+          dispatch({ type: 'math', value: 'divide' });
           setCurNum('');
+          break;
+        case 'c':
+          dispatch({ type: 'clear' });
           break;
         default:
           return;
@@ -135,20 +75,37 @@ function App() {
     });
   }, []);
 
-  const displayText = () => {
-    if (!state.mathState) {
-      return state.val1;
+  const displayText: TextHandler = () => {
+    if (!mathState) {
+      return val1;
     }
-    if (state.mathState && !equals && !state.val2) {
-      return state.val1;
+    if (mathState && !equals && !val2) {
+      return val1;
     }
-    if (state.mathState && !equals) {
-      return state.val2;
+    if (mathState && !equals) {
+      return val2;
     }
     return '0';
   };
 
-  useEffect(() => {});
+  const mathText: TextHandler = () => {
+    switch (mathState) {
+      case 'add':
+        return '+';
+      case 'subtract':
+        return '-';
+      case 'multiply':
+        return '*';
+      case 'divide':
+        return '/';
+      case 'power':
+        return '^';
+      case 'root':
+        return '√';
+      default:
+        return '';
+    }
+  };
 
   return (
     <div className='App'>
@@ -166,73 +123,64 @@ function App() {
                 className='math-readout'
                 type='text'
                 readOnly
-                value={state.mathState}
+                value={mathText()}
               />
             </div>
             <br></br>
             <div className='calc-container'>
               <div className='btn-container'>
-                <button className='btn' onClick={handleClick}>
-                  9
+                <button className='btn' onClick={handleClear}>
+                  C
                 </button>
-                <button className='btn' onClick={handleClick}>
-                  8
+                <button className='btn' onClick={handleMath} value='power'>
+                  ^
+                </button>
+                <button className='btn'>%</button>
+                <button className='btn' onClick={handleMath} value='divide'>
+                  /
                 </button>
                 <button className='btn' onClick={handleClick}>
                   7
                 </button>
                 <button className='btn' onClick={handleClick}>
-                  6
+                  8
                 </button>
                 <button className='btn' onClick={handleClick}>
-                  5
+                  9
+                </button>
+                <button className='btn' onClick={handleMath} value='multiply'>
+                  x
                 </button>
                 <button className='btn' onClick={handleClick}>
                   4
                 </button>
                 <button className='btn' onClick={handleClick}>
-                  3
+                  5
                 </button>
                 <button className='btn' onClick={handleClick}>
-                  2
+                  6
+                </button>
+                <button className='btn' onClick={handleMath} value='subtract'>
+                  -
                 </button>
                 <button className='btn' onClick={handleClick}>
                   1
                 </button>
                 <button className='btn' onClick={handleClick}>
-                  0
+                  2
                 </button>
-                <button className='btn' onClick={handleClear}>
-                  C
+                <button className='btn' onClick={handleClick}>
+                  3
                 </button>
-                <button className='btn' onClick={handleEquals}>
-                  =
-                </button>
-              </div>
-              <div className='math-container'>
-                <button className='math-btn' onClick={handleMath} value='add'>
+                <button className='btn' onClick={handleMath} value='add'>
                   +
                 </button>
-                <button
-                  className='math-btn'
-                  onClick={handleMath}
-                  value='multiply'
-                >
-                  x
+                <button className='btn' onClick={handleClick}>
+                  0
                 </button>
-                <button
-                  className='math-btn'
-                  onClick={handleMath}
-                  value='divide'
-                >
-                  /
-                </button>
-                <button
-                  className='math-btn'
-                  onClick={handleMath}
-                  value='subtract'
-                >
-                  -
+                <button className='btn'>.</button>
+                <button className='btn-equals' onClick={handleEquals}>
+                  =
                 </button>
               </div>
             </div>
