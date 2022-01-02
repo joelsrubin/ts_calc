@@ -1,23 +1,25 @@
 import { useEffect, useReducer, useState } from 'react';
 import './App.css';
 import Button from './Button';
-import { initialState, mathReducer } from './Reducer';
+import { initialState, reducer } from './Reducer';
 import { buttons } from './Utils';
 
 function App() {
-  const [state, dispatch] = useReducer(mathReducer, initialState);
-  const [curNum, setCurNum] = useState('0');
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [curNum, setCurNum] = useState('');
   const { mathState, val1, val2 } = state;
 
   const handleClick: EventHandler = (e) => {
     const element = e.target as HTMLInputElement;
     const value = element.innerHTML;
+
+    // only allow one decimal per val
     if (value === '.' && curNum.includes('.')) {
       return;
     }
 
     // if curNum is 0, clear input and replace
-    if (curNum === '0') {
+    if (!curNum) {
       setCurNum(value);
       mathState
         ? // if mathState is set, that means we've already set val1, so set val2
@@ -42,19 +44,26 @@ function App() {
   };
 
   // handler to clear all calc vals and operators
-  const handleClear: EmptyReturnFunction = () => {
+  const handleClear: DispatchFunction = () => {
     setCurNum('');
     dispatch({ type: 'clear' });
   };
 
   // compute math operation
-  const handleEquals: EmptyReturnFunction = () => {
+  const handleEquals: DispatchFunction = () => {
     dispatch({ type: 'compute' });
+  };
+
+  // alternate vals between neg and pos
+  const handlePlusMinus: DispatchFunction = () => {
+    mathState
+      ? dispatch({ type: 'plusMinus', value: 'val2' })
+      : dispatch({ type: 'plusMinus', value: 'val1' });
   };
 
   // set listeners for keyboard math ops
   useEffect(() => {
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
       switch (e.key) {
         case '+':
           dispatch({ type: 'math', value: 'add' });
@@ -88,16 +97,16 @@ function App() {
   const displayText: TextHandler = () => {
     // scenario: we haven't selected an operation -> show val1
     if (!mathState) {
-      return val1;
+      return val1 ?? 0;
     }
 
     // scenario: we've entered val1, chosen an op, but haven't hit equals -> show val1
     if (mathState && !val2) {
-      return val1;
+      return val1 ?? 0;
     }
 
     // scenario: -> otherwise show val2
-    return val2;
+    return val2 ?? 0;
   };
 
   const mathText: TextHandler = () => {
@@ -150,6 +159,8 @@ function App() {
                         ? handleClear
                         : btn === '='
                         ? handleEquals
+                        : btn === '+-'
+                        ? handlePlusMinus
                         : handleMath
                     }
                     value={
