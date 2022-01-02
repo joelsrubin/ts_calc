@@ -21,6 +21,7 @@ export function mathReducer(state: InitialState, action: any) {
       return {
         ...state,
         mathState: action.value,
+        currentTotal: 0,
       };
     case 'compute':
       switch (state.mathState) {
@@ -30,6 +31,7 @@ export function mathReducer(state: InitialState, action: any) {
             mathState: '',
             currentTotal: state.val1 + state.val2,
             val1: state.val1 + state.val2,
+            val2: 0,
           };
         case 'subtract':
           return {
@@ -37,6 +39,7 @@ export function mathReducer(state: InitialState, action: any) {
             mathState: '',
             currentTotal: state.val1 - state.val2,
             val1: state.val1 - state.val2,
+            val2: 0,
           };
         case 'multiply':
           return {
@@ -44,6 +47,7 @@ export function mathReducer(state: InitialState, action: any) {
             mathState: '',
             currentTotal: state.val1 * state.val2,
             val1: state.val1 * state.val2,
+            val2: 0,
           };
         case 'divide':
           return {
@@ -51,6 +55,7 @@ export function mathReducer(state: InitialState, action: any) {
             mathState: '',
             currentTotal: state.val1 / state.val2,
             val1: state.val1 / state.val2,
+            val2: 0,
           };
         case 'power':
           return {
@@ -58,13 +63,7 @@ export function mathReducer(state: InitialState, action: any) {
             mathState: '',
             currentTotal: Math.pow(state.val1, state.val2),
             val1: Math.pow(state.val1, state.val2),
-          };
-        case 'root':
-          return {
-            ...state,
-            mathState: '',
-            currentTotal: Math.sqrt(state.val1),
-            val1: Math.sqrt(state.val1),
+            val2: 0,
           };
         case '':
         default:

@@ -104,21 +104,26 @@
 
 .btn-equals {
   grid-column: 3 / 5;
-  background-color: gray;
+  background-color: tomato;
   border-radius: 10px;
   font-family: 'menlo';
   font-size: 22px;
   text-align: center;
 }
 
+.btn-equals:hover {
+  background-color: rgb(255, 128, 106);
+}
+.btn-equals:active {
+  background-color: tomato;
+}
+
 .math-btn {
   width: 120%;
   height: 4rem;
   background-color: gray;
-
   margin: 5px;
   border-radius: 10px;
-
   font-family: 'menlo';
   font-size: 22px;
   text-align: center;

@@ -1,15 +1,8 @@
-type ClickHandler = () => void;
 type EventHandler = (e: React.MouseEvent<HTMLInputELement>) => void;
+type EmptyReturnFunction = () => void;
 type TextHandler = () => string;
 
-type MathState =
-  | 'multiply'
-  | 'add'
-  | 'subtract'
-  | 'divide'
-  | 'power'
-  | 'root'
-  | '';
+type MathState = 'multiply' | 'add' | 'subtract' | 'divide' | 'power' | '';
 
 type ActionTypes = 'math' | 'compute' | 'clear' | 'val1' | 'val2';
 
@@ -20,7 +13,9 @@ type InitialState = {
   val2: number;
 };
 
-type Action = {
-  type: ActionTypes;
-  value?: number | MathState;
+type ButtonProps = {
+  className: string;
+  value: string;
+  handler: ClickHandler;
+  children: string | number;
 };
