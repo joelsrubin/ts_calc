@@ -1,6 +1,5 @@
 export const initialState = {
   mathState: '',
-  currentTotal: 0,
   val1: 0,
   val2: 0,
 };
@@ -21,7 +20,6 @@ export function mathReducer(state: InitialState, action: any) {
       return {
         ...state,
         mathState: action.value,
-        currentTotal: 0,
       };
     case 'compute':
       switch (state.mathState) {
@@ -29,7 +27,6 @@ export function mathReducer(state: InitialState, action: any) {
           return {
             ...state,
             mathState: '',
-            currentTotal: state.val1 + state.val2,
             val1: state.val1 + state.val2,
             val2: 0,
           };
@@ -37,7 +34,6 @@ export function mathReducer(state: InitialState, action: any) {
           return {
             ...state,
             mathState: '',
-            currentTotal: state.val1 - state.val2,
             val1: state.val1 - state.val2,
             val2: 0,
           };
@@ -45,7 +41,6 @@ export function mathReducer(state: InitialState, action: any) {
           return {
             ...state,
             mathState: '',
-            currentTotal: state.val1 * state.val2,
             val1: state.val1 * state.val2,
             val2: 0,
           };
@@ -53,7 +48,6 @@ export function mathReducer(state: InitialState, action: any) {
           return {
             ...state,
             mathState: '',
-            currentTotal: state.val1 / state.val2,
             val1: state.val1 / state.val2,
             val2: 0,
           };
@@ -61,7 +55,6 @@ export function mathReducer(state: InitialState, action: any) {
           return {
             ...state,
             mathState: '',
-            currentTotal: Math.pow(state.val1, state.val2),
             val1: Math.pow(state.val1, state.val2),
             val2: 0,
           };

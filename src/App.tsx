@@ -7,8 +7,7 @@ import { buttons } from './Utils';
 function App() {
   const [state, dispatch] = useReducer(mathReducer, initialState);
   const [curNum, setCurNum] = useState('0');
-  const [equals, setEquals] = useState(false);
-  const { mathState, val1, val2, currentTotal } = state;
+  const { mathState, val1, val2 } = state;
 
   const handleClick: EventHandler = (e) => {
     const element = e.target as HTMLInputElement;
@@ -45,13 +44,11 @@ function App() {
   // handler to clear all calc vals and operators
   const handleClear: EmptyReturnFunction = () => {
     setCurNum('');
-    setEquals(false);
     dispatch({ type: 'clear' });
   };
 
   // compute math operation
   const handleEquals: EmptyReturnFunction = () => {
-    setEquals(true);
     dispatch({ type: 'compute' });
   };
 
@@ -115,8 +112,6 @@ function App() {
         return '/';
       case 'power':
         return '^';
-      case 'root':
-        return '√';
       default:
         return '';
     }

@@ -9,7 +9,6 @@ type TextHandler = () => string;
 type MathState = 'multiply' | 'add' | 'subtract' | 'divide' | 'power' | '';
 type ActionTypes = 'math' | 'compute' | 'clear' | 'val1' | 'val2';
 type InitialState = {
-  currentTotal: number;
   mathState: MathState;
   val1: number;
   val2: number;
