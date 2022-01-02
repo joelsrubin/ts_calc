@@ -95,18 +95,8 @@ function App() {
     }
 
     // scenario: we've entered val1, chosen an op, but haven't hit equals -> show val1
-    if (mathState && !equals && !val2) {
+    if (mathState && !val2) {
       return val1;
-    }
-
-    // scenario: we've computed an operation -> val2 gets reset and val1 becomes current total -> show val1 (currentTotal in this case)
-    if (mathState && !val2 && equals) {
-      return val1;
-    }
-
-    // scenario: currentTotal is set -> show currentTotal
-    if (currentTotal) {
-      return currentTotal;
     }
 
     // scenario: -> otherwise show val2
